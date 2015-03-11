@@ -1,0 +1,27 @@
+{
+  "uuid": "030ee5fc-518b-49e5-b9b2-0700ee92af89",
+  "shortName": "Simplicity",
+  "longName": "Simplicity",
+  "companyName": "Pebble Technology",
+  "versionCode": 3,
+  "versionLabel": "3.0",
+  "watchapp": {
+    "watchface": true
+  },
+  "appKeys": {},
+  "resources": {
+    "media": [
+      {
+        "menuIcon": true,
+        "type": "png",
+        "name": "IMAGE_MENU_ICON",
+        "file": "images/menu_icon_simplicity.png"
+      }
+    ]
+  },
+  "targetPlatforms": [
+    "aplite",
+    "basalt"
+  ],
+  "sdkVersion": "3"
+}
