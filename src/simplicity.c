@@ -17,12 +17,7 @@ static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
   strftime(s_date_text, sizeof(s_date_text), "%B %e", tick_time);
   text_layer_set_text(s_date_layer, s_date_text);
 
-  char *time_format;
-  if (clock_is_24h_style()) {
-    time_format = "%R";
-  } else {
-    time_format = "%I:%M";
-  }
+  char *time_format = clock_is_24h_style() ? "%R" : "%I:%M";
   strftime(s_time_text, sizeof(s_time_text), time_format, tick_time);
 
   // Handle lack of non-padded hour format string for twelve hour clock.
@@ -34,20 +29,31 @@ static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
 
 static void main_window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
+  GRect bounds = layer_get_bounds(window_layer);
 
-  s_date_layer = text_layer_create(GRect(8, 68, 136, 100));
+  s_date_layer = text_layer_create(PBL_IF_ROUND_ELSE(
+    GRect(bounds.origin.x, 68, bounds.size.w, 100),
+    GRect(8, 68, 136, 100)));
+  text_layer_set_text_alignment(s_date_layer, PBL_IF_ROUND_ELSE(
+    GTextAlignmentCenter, GTextAlignmentLeft));
   text_layer_set_text_color(s_date_layer, GColorWhite);
   text_layer_set_background_color(s_date_layer, GColorClear);
   text_layer_set_font(s_date_layer, fonts_get_system_font(FONT_KEY_ROBOTO_CONDENSED_21));
   layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
 
-  s_time_layer = text_layer_create(GRect(7, 92, 137, 76));
+  s_time_layer = text_layer_create(PBL_IF_ROUND_ELSE(
+    GRect(bounds.origin.x, 92, bounds.size.w, 76),
+    GRect(7, 92, 137, 76)));
+  text_layer_set_text_alignment(s_time_layer, PBL_IF_ROUND_ELSE(
+    GTextAlignmentCenter, GTextAlignmentLeft));
   text_layer_set_text_color(s_time_layer, GColorWhite);
   text_layer_set_background_color(s_time_layer, GColorClear);
   text_layer_set_font(s_time_layer, fonts_get_system_font(FONT_KEY_ROBOTO_BOLD_SUBSET_49));
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
 
-  GRect line_frame = GRect(8, 97, 139, 2);
+  GRect line_frame = PBL_IF_ROUND_ELSE(
+    GRect(8, 97, bounds.size.w - 16, 2),
+    GRect(8, 97, 139, 2));
   s_line_layer = layer_create(line_frame);
   layer_set_update_proc(s_line_layer, line_layer_update_callback);
   layer_add_child(window_layer, s_line_layer);
