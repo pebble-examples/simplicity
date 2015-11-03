@@ -74,7 +74,9 @@ static void init() {
     .unload = main_window_unload,
   });
   window_stack_push(s_main_window, true);
-
+  
+  setlocale(LC_ALL, "");
+  
   tick_timer_service_subscribe(MINUTE_UNIT, handle_minute_tick);
   
   // Prevent starting blank
