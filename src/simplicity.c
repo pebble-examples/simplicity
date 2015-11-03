@@ -51,9 +51,7 @@ static void main_window_load(Window *window) {
   text_layer_set_font(s_time_layer, fonts_get_system_font(FONT_KEY_ROBOTO_BOLD_SUBSET_49));
   layer_add_child(window_layer, text_layer_get_layer(s_time_layer));
 
-  GRect line_frame = PBL_IF_ROUND_ELSE(
-    GRect(8, 97, bounds.size.w - 16, 2),
-    GRect(8, 97, 139, 2));
+  GRect line_frame = GRect(8, 97, bounds.size.w - 16, 2);
   s_line_layer = layer_create(line_frame);
   layer_set_update_proc(s_line_layer, line_layer_update_callback);
   layer_add_child(window_layer, s_line_layer);
