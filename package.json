@@ -1,0 +1,41 @@
+{
+  "version": "3.2.0",
+  "author": "Pebble Technology",
+  "private": true,
+  "dependencies": {},
+  "keywords": [
+    "pebble-app"
+  ],
+  "pebble": {
+    "sdkVersion": "3",
+    "resources": {
+      "media": [
+        {
+          "menuIcon": true,
+          "type": "bitmap",
+          "name": "IMAGE_MENU_ICON",
+          "file": "images/menu_icon_simplicity.png"
+        }
+      ]
+    },
+    "projectType": "native",
+    "uuid": "030ee5fc-518b-49e5-b9b2-0700ee92af89",
+    "messageKeys": {},
+    "enableMultiJS": false,
+    "displayName": "Simplicity",
+    "watchapp": {
+      "onlyShownOnCommunication": false,
+      "hiddenApp": false,
+      "watchface": true
+    },
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite",
+      "emery"
+    ],
+    "capabilities": []
+  },
+  "name": "Simplicity"
+}
