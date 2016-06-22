@@ -1,5 +1,5 @@
 # simplicity
 
-![screenshot](simplicity-screenshot.png)
+![screenshot](screenshots/simplicity-screenshot.png)
 
 Example watchface showing the date and time.
