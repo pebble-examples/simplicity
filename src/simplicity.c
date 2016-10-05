@@ -67,19 +67,34 @@ static void prv_main_window_load(Window *window) {
   s_shifting_layer = layer_create(full_bounds);
   layer_add_child(s_window_layer, s_shifting_layer);
 
-  #if PBL_DISPLAY_WIDTH == 200
-    #define RECT_DATE GRect(8, 128, bounds.size.w, 100)
-    #define RECT_TIME GRect(7, 152, bounds.size.w, 76)
-    #define RECT_LINE GRect(8, 157, bounds.size.w - 16, 2)
-  #elif PBL_DISPLAY_WIDTH == 180
-    #define RECT_DATE GRect(bounds.origin.x, 68, bounds.size.w, 100)
-    #define RECT_TIME GRect(bounds.origin.x, 92, bounds.size.w, 76)
-    #define RECT_LINE GRect(8, 97, bounds.size.w - 16, 2)
-  #else
-    #define RECT_DATE GRect(8, 68, bounds.size.w, 100)
-    #define RECT_TIME GRect(7, 92, bounds.size.w, 76)
-    #define RECT_LINE GRect(8, 97, bounds.size.w - 16, 2)
+  // Inset text from left/right edges
+  uint8_t inset_text = 8;
+
+  // Inset horizontal line from left/right edges
+  uint8_t inset_line = 8;
+
+  // Offset from the top edge
+  uint8_t offset_y = PBL_DISPLAY_HEIGHT - 100;
+
+  #if PBL_DISPLAY_HEIGHT == 228
+    // Increase left/right inset
+    inset_text = 12;
+    inset_line = 12;
+
+    // Decrease offset top edge
+    offset_y -= 20;
+  #elif PBL_DISPLAY_HEIGHT == 180
+    // Don't inset the text, it's centre aligned
+    inset_text = 0;
+
+    // Decrease offset top edge
+    offset_y -= 12;
   #endif
+
+  // Create GRect's based on screen dimensions
+  #define RECT_DATE GRect(inset_text, offset_y, bounds.size.w, 23)
+  #define RECT_TIME GRect(inset_text - 1, offset_y + 24, bounds.size.w, 51)
+  #define RECT_LINE GRect(inset_line, offset_y + 29, bounds.size.w - (inset_line * 2), 2)
 
   // The Date
   s_date_layer = text_layer_create(RECT_DATE);
