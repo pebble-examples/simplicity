@@ -67,17 +67,17 @@ static void prv_main_window_load(Window *window) {
   s_shifting_layer = layer_create(full_bounds);
   layer_add_child(s_window_layer, s_shifting_layer);
 
-  #if defined PBL_PLATFORM_EMERY
-    #define RECT_DATE GRect(8, 128, 136, 100)
-    #define RECT_TIME GRect(7, 152, 137, 76)
+  #if PBL_DISPLAY_WIDTH == 200
+    #define RECT_DATE GRect(8, 128, bounds.size.w, 100)
+    #define RECT_TIME GRect(7, 152, bounds.size.w, 76)
     #define RECT_LINE GRect(8, 157, bounds.size.w - 16, 2)
-  #elif defined PBL_PLATFORM_CHALK
+  #elif PBL_DISPLAY_WIDTH == 180
     #define RECT_DATE GRect(bounds.origin.x, 68, bounds.size.w, 100)
     #define RECT_TIME GRect(bounds.origin.x, 92, bounds.size.w, 76)
     #define RECT_LINE GRect(8, 97, bounds.size.w - 16, 2)
   #else
-    #define RECT_DATE GRect(8, 68, 136, 100)
-    #define RECT_TIME GRect(7, 92, 137, 76)
+    #define RECT_DATE GRect(8, 68, bounds.size.w, 100)
+    #define RECT_TIME GRect(7, 92, bounds.size.w, 76)
     #define RECT_LINE GRect(8, 97, bounds.size.w - 16, 2)
   #endif
 
