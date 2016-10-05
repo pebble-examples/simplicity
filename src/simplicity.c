@@ -5,6 +5,7 @@ static TextLayer *s_date_layer, *s_time_layer;
 static Layer *s_window_layer, *s_shifting_layer, *s_line_layer;
 static int16_t s_obstruction = 0;
 
+
 // Move the shifting layer based on the obstruction size
 static void prv_resposition_layers() {
   GRect full_bounds = layer_get_bounds(s_window_layer);
@@ -66,10 +67,37 @@ static void prv_main_window_load(Window *window) {
   s_shifting_layer = layer_create(full_bounds);
   layer_add_child(s_window_layer, s_shifting_layer);
 
+  // Inset text from left/right edges
+  uint8_t inset_text = 8;
+
+  // Inset horizontal line from left/right edges
+  uint8_t inset_line = 8;
+
+  // Offset from the top edge
+  uint8_t offset_y = PBL_DISPLAY_HEIGHT - 100;
+
+  #if PBL_DISPLAY_HEIGHT == 228
+    // Increase left/right inset
+    inset_text = 12;
+    inset_line = 12;
+
+    // Decrease offset top edge
+    offset_y -= 20;
+  #elif PBL_DISPLAY_HEIGHT == 180
+    // Don't inset the text, it's centre aligned
+    inset_text = 0;
+
+    // Decrease offset top edge
+    offset_y -= 12;
+  #endif
+
+  // Create GRect's based on screen dimensions
+  #define RECT_DATE GRect(inset_text, offset_y, bounds.size.w, 23)
+  #define RECT_TIME GRect(inset_text - 1, offset_y + 24, bounds.size.w, 51)
+  #define RECT_LINE GRect(inset_line, offset_y + 29, bounds.size.w - (inset_line * 2), 2)
+
   // The Date
-  s_date_layer = text_layer_create(PBL_IF_ROUND_ELSE(
-    GRect(bounds.origin.x, 68, bounds.size.w, 100),
-    GRect(8, 68, 136, 100)));
+  s_date_layer = text_layer_create(RECT_DATE);
   text_layer_set_text_alignment(s_date_layer, PBL_IF_ROUND_ELSE(
     GTextAlignmentCenter, GTextAlignmentLeft));
   text_layer_set_text_color(s_date_layer, GColorWhite);
@@ -78,9 +106,7 @@ static void prv_main_window_load(Window *window) {
   layer_add_child(s_shifting_layer, text_layer_get_layer(s_date_layer));
 
   // The Time
-  s_time_layer = text_layer_create(PBL_IF_ROUND_ELSE(
-    GRect(bounds.origin.x, 92, bounds.size.w, 76),
-    GRect(7, 92, 137, 76)));
+  s_time_layer = text_layer_create(RECT_TIME);
   text_layer_set_text_alignment(s_time_layer, PBL_IF_ROUND_ELSE(
     GTextAlignmentCenter, GTextAlignmentLeft));
   text_layer_set_text_color(s_time_layer, GColorWhite);
@@ -89,8 +115,7 @@ static void prv_main_window_load(Window *window) {
   layer_add_child(s_shifting_layer, text_layer_get_layer(s_time_layer));
 
   // The horizontal line
-  GRect line_frame = GRect(8, 97, bounds.size.w - 16, 2);
-  s_line_layer = layer_create(line_frame);
+  s_line_layer = layer_create(RECT_LINE);
   layer_set_update_proc(s_line_layer, prv_line_layer_update_callback);
   layer_add_child(s_shifting_layer, s_line_layer);
 
